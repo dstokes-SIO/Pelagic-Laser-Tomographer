@@ -1,1 +1,47 @@
 
+
+src
+The “src” directory has the PLT filter’s C++ code. These are the files:
+	crop.cpp        - crop images to the relevant area
+	gray.cpp        - convert images to grayscale
+	histogram.cpp   - generate a histogram
+	median.cpp      - do a median filter of images
+	pltfilter.cpp   - find dots and produce a CSV result
+	threshold.cpp   - threshold images
+	rapidcsv.h      - the CVS parser from above
+
+“pltfilter” is the main program. It reads in a single image or a directory of images and…
+	1	Converts each image to grayscale using the green channel alone.
+	2	Optionally applies a median filter to remove small-scale noise.
+	3	Optional thresholds to drop out dim features and brighten the rest.
+	4	Optional masks the image against an image mask to remove device parts in the camera’s view.
+	5	Contours the resulting image to find dots.
+	6	Filters out dots that are too big or small to be reasonable.
+
+The other source files are optional separate tools used to do just one processing step and see the results. They are useful for debugging, but are not needed for dot generation.
+
+
+
+Installing libraries
+The tools, including primarily “pltfilter”, require two libraries:
+	libraw   - read RAW images, like from the PLT camera
+	opencv4  - do image processing and contours
+
+Both libraries must be installed on your Mac. If you use MacPorts (recommended), you can download and install these, and their dependencies, with these two commands in a shell window:
+	port install libraw
+	port install opencv4 +nonfree +contrib +openmp
+
+MacPorts will handle getting compilers, etc, so that these build.
+
+You specifically need the OpenMP version of OpenCV. This is used to parallelize image processing across your Mac’s cores so that everything runs faster.
+
+These are what I used last in 2021. There may be newer versions or complexities.
+
+
+
+Building PLT filter
+Use a shell window and go to the “src” directory and type:
+	make pltfilter
+
+When you make “pltfilter”, the application will be compiled into a binary named “pltfilter” in the same directory. While you can run it from a shell window, it has a large number of arguments that must be set appropriately. This is handled with shell scripts (see below).
+
