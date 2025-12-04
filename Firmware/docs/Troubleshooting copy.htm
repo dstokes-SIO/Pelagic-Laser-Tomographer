@@ -1,0 +1,385 @@
+<html>
+<head>
+<title>PLT Troubleshooting</title>
+<style>
+  h1 {
+    color: #0066dd;
+    text-align: center;
+  }
+
+  h2 {
+    color: #000077;
+    border-bottom: 1px solid #000077;
+    margin-top: 3em;
+  }
+
+  dt {
+    color: #000077;
+    font-weight: bold;
+  }
+  dd {
+    margin-bottom: 1em;
+  }
+
+  ul {
+    margin-top: 0;
+    margin-bottom: 0;
+  }
+
+  table.lightstable {
+    margin-left: 1em;
+    margin-right: 1em;
+    width: calc(100% - 2em);
+  }
+  table.lightstable th {
+    border-bottom: 1px solid #000;
+    text-align: left;
+    word-break: none;
+  }
+  table.lightstable th:first-child {
+    white-space: nowrap;
+  }
+  table.lightstable th:last-child {
+    width: 100%;
+  }
+  table.lightstable td {
+    border-bottom: 1px solid #ccc;
+    vertical-align: top;
+    padding-bottom: 0.5em;
+  }
+  table.lightstable td:first-child {
+    white-space: nowrap;
+  }
+  table.lightstable td:last-child {
+    width: 100%;
+  }
+  table.lightstable td p {
+    margin-bottom: 0;
+  }
+
+  div.lights {
+    border: none;
+    background-color: #ccc;
+    padding: 2px;
+    margin: 0;
+    line-height: 10px;
+  }
+  div.lights span {
+    display: inline-block;
+    border: 1px solid #000;
+    width: 10px;
+    height: 10px;
+    padding: 0;
+  }
+
+  div.lights .power_off {
+    background-color: #888888;
+    border-radius: 5px;
+    margin-right: 5px;
+  }
+  div.lights .power_ready {
+    background-color: #66FF66;
+    border-radius: 5px;
+    margin-right: 5px;
+  }
+
+  div.lights .hw_off {
+    background-color: #888888;
+  }
+  div.lights .hw_boot {
+    background-color: #6666ff;
+  }
+  div.lights .hw_error {
+    background-color: #ff0000;
+  }
+  div.lights .hw_warning {
+    background-color: #ffff00;
+  }
+  div.lights .hw_ready {
+    background-color: #66FF66;
+  }
+
+  div.lights .sw_off {
+    background-color: #888888;
+  }
+  div.lights .sw_boot {
+    background-color: #6666ff;
+  }
+  div.lights .sw_error {
+    background-color: #ff0000;
+  }
+  div.lights .sw_ready {
+    background-color: #66ff66;
+  }
+
+  div.lights .camera_off {
+    background-color: #888888;
+  }
+  div.lights .camera_boot {
+    background-color: #6666ff;
+  }
+  div.lights .camera_ready {
+    background-color: #00ff00;
+  }
+  div.lights .camera_shoot {
+    background-color: #ffffff;
+  }
+</style>
+</head>
+<body>
+<h1>PLT Troubleshooting</h1>
+
+
+
+<h2>Indicator lights</h2>
+<p>The device includes four indicator lights exposed at the top of the pressure case:</p>
+<ol>
+  <li>Power (off or green).</li>
+  <li>Hardware status (multi-colored).</li>
+  <li>Software status (multi-colored).</li>
+  <li>Camera status (multi-colored).</li>
+</ol>
+
+<p>The status lights are only a broad indicator. For detailed information, use the USB interface and type "hwinfo" to review the hardware status.</p>
+
+
+<table class="lightstable">
+  <thead>
+    <tr><th>Lights</th><th>Meaning</th></tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>
+        <div class="lights">
+          <span class="power_off"></span>
+          <span class="hw_off"></span>
+          <span class="sw_off"></span>
+          <span class="camera_off"></span>
+        </div>
+      </td>
+      <td><p>Device is off.</p></td>
+    </tr>
+
+    <tr>
+      <td>
+        <div class="lights">
+          <span class="power_ready"></span>
+          <span class="hw_off"></span>
+          <span class="sw_off"></span>
+          <span class="camera_off"></span>
+        </div>
+      </td>
+      <td><p>Device is on and loading the controller (&lt; 1 sec).</p></td>
+    </tr>
+
+    <tr>
+      <td>
+        <div class="lights">
+          <span class="power_ready"></span>
+          <span class="hw_boot"></span>
+          <span class="sw_boot"></span>
+          <span class="camera_off"></span>
+        </div>
+      </td>
+      <td><p>Device is booting (about 5 sec). Booting includes a fast sweep of the lights and the laser.</p></td>
+    </tr>
+
+    <tr>
+      <td>
+        <div class="lights">
+          <span class="power_ready"></span>
+          <span class="hw_error"></span>
+          <span class="sw_error"></span>
+          <span class="camera_off"></span>
+        </div>
+      </td>
+      <td>
+        <p>Critical hardware problems. Possible causes:</p>
+        <ul>
+          <li>The controller battery is too low for use.</li>
+          <li>The main battery is missing, dead, or too low for use.</li>
+          <li>The SD card is not present.</li>
+          <li>The SD card is not in FAT16, FAT32, or exFAT format.</li>
+          <li>The SD card reader is not working or is misswired.</li>
+        </ul>
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        <div class="lights">
+          <span class="power_ready"></span>
+          <span class="hw_ready"></span>
+          <span class="sw_error"></span>
+          <span class="camera_off"></span>
+        </div>
+      </td>
+      <td>
+        <p>Critical software problems. Possible causes:</p>
+        <ul>
+          <li>The SD card is full.</li>
+          <li>The SD card has the maximum of 100 log files.</li>
+        </ul>
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        <div class="lights">
+          <span class="power_ready"></span>
+          <span class="hw_warning"></span>
+          <span class="sw_ready"></span>
+          <span class="camera_off"></span>
+        </div>
+      </td>
+      <td>
+        <p>Non-critical hardware problems that may prevent the device from running properly. Possible causes:</p>
+        <ul>
+          <li>The controller battery is low.</li>
+          <li>The main battery is low.</li>
+          <li>The real time clock is not working or is misswired.</li>
+          <li>The real time clock battery is dead.</li>
+          <li>The inertia module is not working or is misswired.</li>
+          <li>The pressure sensor is not working or is misswired.</li>
+          <li>The temperature sensor is not working or is misswired.</li>
+          <li>The SD card is getting full.</li>
+        </ul>
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        <div class="lights">
+          <span class="power_ready"></span>
+          <span class="hw_ready"></span>
+          <span class="sw_ready"></span>
+          <span class="camera_off"></span>
+        </div>
+      </td>
+      <td><p>Device is ready.</p></td>
+    </tr>
+
+    <tr>
+      <td>
+        <div class="lights">
+          <span class="power_ready"></span>
+          <span class="hw_ready"></span>
+          <span class="sw_ready"></span>
+          <span class="camera_boot"></span>
+        </div>
+      </td>
+      <td><p>Device is booting the camera at the start of imaging.</p></td>
+    </tr>
+
+    <tr>
+      <td>
+        <div class="lights">
+          <span class="power_ready"></span>
+          <span class="hw_ready"></span>
+          <span class="sw_ready"></span>
+          <span class="camera_ready"></span>
+        </div>
+      </td>
+      <td><p>Device is imaging and waiting to take the next image. Camera and intensifier are on. Laser is on if in continuous mode.</p></td>
+    </tr>
+
+    <tr>
+      <td>
+        <div class="lights">
+          <span class="power_ready"></span>
+          <span class="hw_ready"></span>
+          <span class="sw_ready"></span>
+          <span class="camera_shoot"></span>
+        </div>
+      </td>
+      <td><p>Device is imaging and the camera is taking an image (&lt; 1/2 sec). Camera, intensifier, and laser are on.</p></td>
+    </tr>
+
+  </tbody>
+</table>
+
+
+
+
+<h2>Boot messages</h2>
+<p>Device boot can show the following messages.</p>
+
+<dl>
+  <dt>"Cannot run due to critical problems."</dt>
+  <dd>Critical hardware problems prevent the device from operating.
+    See the hardware information shown during boot or type the USB "hwinfo" command for details.</dd>
+
+  <dt>"Ready for limited use despite problems."</dt>
+  <dd>Non-critical hardware problems may prevent the device from operating properly.
+    See the hardware information shown during boot or type the USB "hwinfo" command for details.</dd>
+
+  <dt>"The real time clock was not found. Dates are 1/1/2000 + ms since boot."</dt>
+  <dd>The real time clock module was not found on boot. Dates all January 1st, 2000 plus the time since boot.</dd>
+
+  <dt>"Ready."</dt>
+  <dd>There were no boot problems and the device is ready.</dd>
+
+</dl>
+
+
+
+
+
+<h2>Hardware information (hwinfo) messages</h2>
+<p>The USB "hwinfo" command reviews the hardware status and can show the following messages.</p>
+
+<dl>
+  <dt>"Missing SD card or bad card format"</dt>
+  <dd>The SD card file system handler could not be initialized. The SD card may not be present, the reader may not be working, or the card format may not be in FAT16, FAT32, or exFAT format.</dd>
+
+  <dt>"Unsupported SD card format"</dt>
+  <dd>The SD card file system handler could not be initialized. The SD card is using a FAT format variant that is not supported. Use the "format" command to reformat.</dd>
+
+  <dt>"LC709203F main battery monitor not found"</dt>
+  <dd>The battery level monitor module for the main battery could not be initialized. The module may not be working.</dd>
+
+  <dt>"LC709203F controller battery monitor not found"</dt>
+  <dd>The battery level monitor module for the controller battery could not be initialized. The module may not be working.</dd>
+
+  <dt>"DS3231 real time clock not found"</dt>
+  <dd>The real time clock module could not be initialized. The module may not be working.</dd>
+
+  <dt>"LSM9DS1 inertia module not found"</dt>
+  <dd>The inertia module (magnetometer, accelerometer, magnetometer) could not be initialized. The module may not be working.</dd>
+
+  <dt>"MS5837 pressure sensor not found"</dt>
+  <dd>The pressure sensor module could not be initialized. The module may not be working.</dd>
+
+  <dt>"MS5837 temperature sensor not found"</dt>
+  <dd>The temperature sensor module could not be initialized. The module may not be working.</dd>
+</dl>
+
+
+
+
+<h2>Error messages</h2>
+<p>During use, USB commands may show the following error messages.</p>
+
+<dl>
+
+  <dt>"Missing SD card or bad card format"</dt>
+  <dd>The SD card file system handler could not be initialized. The SD card may not be present, the reader may not be working, or the card format may not be in FAT16, FAT32, or exFAT format.</dd>
+
+  <dt>"Too many log files; 100 max."</dt>
+  <dd>Recording cannot be started because there are already 100 log files, named "DATA_00.CSV" through "DATA_99.CSV". Remove at least one to continue.</dd>
+
+  <dt>"SD card is full"</dt>
+  <dd>The SD card is full. Recording cannot continue because there is no space for new data log entries. Remove some files to continue.</dd>
+
+  <dt>"The real time clock was not found. Dates are 1/1/2000 + ms since boot."</dt>
+  <dd>The real time clock module was not found on boot. Dates all January 1st, 2000 plus the time since boot.</dd>
+
+  <dt>"Date cannot be set. Real time clock not found."</dt>
+  <dd>The real time clock module was not found on boot. Use of the USB "date" command to set the date fails.</dd>
+
+  <dt>"Cannot write to data log file."</dt>
+  <dd>The SD card is full. Recording cannot continue because there is no space for new data log entries. Remove some files to continue.</dd>
+
+</dl>
+
+<p>Additional messages report device status or may report problems with user input, such as a bad file system path for "ls" or "cat" commands.</p>

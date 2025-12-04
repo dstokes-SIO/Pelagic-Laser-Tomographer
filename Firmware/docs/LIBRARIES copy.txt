@@ -1,0 +1,20 @@
+SOFTWARE LIBRARIES
+------------------------------------------------------------------------
+
+The PLT Logger requires:
+
+- All standard Arduino and Adafruit libraries for the Feather M0.
+
+- Adafruit LC709203f version 1.1.0+ to monitor battery levels.
+
+- Adafruit_LSM9DS1 version 2.0.2+ to use the LSM9DS1 inertial module.
+
+- BlueRobotics MS5837 Library version 1.1.1+ to use the MS5837 pressure
+  sensor.
+
+- BlueRobotics TSYS01 Library version 1.0.0+ to use the TSYS01 temperature
+  sensor.
+
+- Adafruit NeoPixel version 1.7.0+ to use NEOPIX LEDs.
+
+- Adafruit RTClib version 1.12.4+ to access the real time clock.
